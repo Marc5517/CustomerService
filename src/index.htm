@@ -3,26 +3,145 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+  <link rel="stylesheet" type="text/css" href="bundle.css" />
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
-  <title>Hello app</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+  <title>Customers</title>
 </head>
 
+<style>
+  body {
+    background-color: lightblue;
+  }
+</style>
+
 <body>
-  <h1>Hello</h1>
-  <div id="app">
-    <input v-model="name" placeholder="Name">
-    <button v-on:click="sayHello()" class="btn btn-primary">Say hello</button>
-    <div>{{ greeting }}</div>
+  
+  <div class="jumbotron jumbotron-fluid" style="color: white; background-color: rgb(28, 16, 190);">
+    <div class="container">
+      <h1><strong>eKunder</strong></h1>
+      <p>Hold dig opdateret med kunderne</p>
+    </div>
   </div>
 
+  <div id="app">
+    <h2>Søg efter kunderne</h2>
+
+    <button id="getAllButton" v-on:click="getAllCustomers" class="btn btn-primary">Alle Kunder</button>
+
+    <br />
+    
+    <input v-model="searchToGetBy" placeholder="navn, adresse, email, etc." type ="text"/>
+    <button v-on:click="getBySearch(searchToGetBy)" class="btn btn-primary">Søg</button>
+
+    <ul id="customerlist" v-if="customers.length">
+      <li v-for="customer in customers">
+        <table class="table-striped table-bordered table-hover">
+          <colgroup>
+            <col span="1" style="width: 8%;">
+            <col span="1" style="width: 13%;">
+            <col span="1" style="width: 13%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 6%;">
+            <col span="1" style="width: 6%;">
+            <col span="1" style="width: 8%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 8%;">
+            <col span="1" style="width: 15%;">
+         </colgroup>
+          <thead>
+            <tr>
+              <th>Kunde nr.</th>
+              <th>Navn</th>
+              <th>Email</th>
+              <th>Adresse</th>
+              <th>By</th>
+              <th>Land</th>
+              <th>Post nr.</th>
+              <th>Telefon nr.</th>
+              <th>Valuta</th>
+              <th>CVR</th>
+              <th>Bogføring</th>
+            </tr>
+          </thead>
+          <tr>
+            <td button v-on:click="getByCustomerNr(customer.customerNr)">{{customer.customerNr}}</td>
+            <td>{{customer.name}}</td>
+            <td>{{customer.email}}</td>
+            <td>{{customer.addresse}}</td>
+            <td>{{customer.townCity}}</td>
+            <td>{{customer.country}}</td>
+            <td>{{customer.postNr}}</td>
+            <td>{{customer.telefonNr}}</td>
+            <td>{{customer.currency}}</td>
+            <td>{{customer.cvr}}</td>
+            <td>{{customer.publicEntry}}</td>
+          </tr>
+        </table>
+        <button v-on:click="deleteCustomer(customer.customerNr)" class="btn btn-warning">Slet</button>
+        <a :href="'https://eproducts.azurewebsites.net/index.htm?customerNr='+customer.customerNr">Indsæt serienummer</a>
+      </li>
+    </ul>
+    <div v-else>Ingen kunder</div>
+    {{deleteMessage}}
+
+    <Button onclick="document.location= 'https://ecustomercreate.azurewebsites.net'" class="btn btn-success">Skab en ny kunde</button>
+
+    <ul id="productList" v-if="products.length">
+      <li v-for="product in products">
+        <table class="table-striped table-bordered table-hover">
+         <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+         </colgroup>
+         <thead>
+          <tr>
+            <th>Vare ID</th>              
+            <th>Vare nr.</th>
+            <th>Kunde nr.</th>
+            <th>Faktura nr.</th>
+            <th>Serie nr.</th>
+          </tr>
+         </thead>
+        <tr>
+          <td>{{product.productId}}</td>
+          <td>{{product.productNr}}</td>
+          <td>{{product.customerNr}}</td>
+          <td>{{product.invoiceNr}}</td>
+          <td>{{product.serialNr}}</td>
+        </tr>
+        </table>
+      </li>
+    </ul>
+    <div v-else>Ingen varer</div>
+
+    <h2>Opdatere kunderne</h2>
+    <input v-model.number="updateData.customerNr" placeholder="Kundenummer" type="number" />
+    <input v-model="updateData.name" placeholder="Navn" type="text" />
+    <input v-model="updateData.email" placeholder="E-mail" type="text" />
+    <input v-model="updateData.addresse" placeholder="Adresse" type="text" />
+    <input v-model="updateData.townCity" placeholder="By" type="text" />
+    <input v-model="updateData.country" placeholder="Land" type="text" />
+    <input v-model.number="updateData.postNr" placeholder="Postnummer" type="number" />
+    <input v-model.number="updateData.telefonNr" placeholder="Telefonnummer" type="number" />
+    <input v-model="updateData.currency" placeholder="Valuta" type="text" />
+    <input v-model.number="updateData.cvr" placeholder="CVR" type="number" />
+    <input v-model="updateData.publicEntry" placeholder="Dato" type="date" />
+    <button v-on:click="updateCustomer()" class="btn btn-success">Opdater</button>
+    <div>{{updateMessage}}</div>
+
+
+  </div>
   <script src="bundle.js"></script>
 </body>
 

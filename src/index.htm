@@ -86,7 +86,7 @@
           </tr>
         </table>
         <button v-on:click="deleteCustomer(customer.customerNr)" class="btn btn-warning">Slet</button>
-        <a :href="'https://eproducts.azurewebsites.net/index.htm?customerNr='+customer.customerNr">Indsæt serienummer</a>
+        <a :href="'https://eproducts.azurewebsites.net/index.htm?customerNr='+customer.customerNr">Indsæt kundens vare</a>
       </li>
     </ul>
     <div v-else>Ingen kunder</div>
@@ -121,6 +121,7 @@
           <td>{{product.serialNr}}</td>
         </tr>
         </table>
+        <a :href="'https://updateproduct.azurewebsites.net/index.htm?productId='+product.productId + '&productNr='+product.productNr + '&customerNr='+product.customerNr + '&invoiceNr='+product.invoiceNr">Indsæt manglende serienummer</a>
       </li>
     </ul>
     <div v-else>Ingen varer</div>

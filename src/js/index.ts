@@ -14,7 +14,6 @@ interface ICustomer {
     telefonNr: number
     currency: string
     cvr: number
-    publicEntry: Date
 }
 
 interface IProduct {
@@ -40,7 +39,7 @@ new Vue({
     data: {
         customers: [],
         searchToGetBy: "",
-        updateData: { customerNr: "", name: "", email: "", addresse: "", townCity: "", country: "", postNr: "", telefonNr: "", currency: "", cvr: "", publicEntry:""},
+        updateData: { customerNr: "", name: "", email: "", addresse: "", townCity: "", country: "", postNr: "", telefonNr: "", currency: "", cvr: ""},
         updateMessage: "",
         deleteId: 0,
         deleteMessage: "",

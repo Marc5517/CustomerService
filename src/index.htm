@@ -54,7 +54,6 @@
             <col span="1" style="width: 8%;">
             <col span="1" style="width: 5%;">
             <col span="1" style="width: 8%;">
-            <col span="1" style="width: 15%;">
          </colgroup>
           <thead>
             <tr>
@@ -68,7 +67,6 @@
               <th>Telefon nr.</th>
               <th>Valuta</th>
               <th>CVR</th>
-              <th>Bogføring</th>
             </tr>
           </thead>
           <tr>
@@ -82,7 +80,6 @@
             <td>{{customer.telefonNr}}</td>
             <td>{{customer.currency}}</td>
             <td>{{customer.cvr}}</td>
-            <td>{{customer.publicEntry}}</td>
           </tr>
         </table>
         <button v-on:click="deleteCustomer(customer.customerNr)" class="btn btn-warning">Slet</button>
@@ -137,7 +134,6 @@
     <input v-model.number="updateData.telefonNr" placeholder="Telefonnummer" type="number" />
     <input v-model="updateData.currency" placeholder="Valuta" type="text" />
     <input v-model.number="updateData.cvr" placeholder="CVR" type="number" />
-    <input v-model="updateData.publicEntry" placeholder="Dato" type="date" />
     <button v-on:click="updateCustomer()" class="btn btn-success">Opdater</button>
     <div>{{updateMessage}}</div>
 

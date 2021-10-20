@@ -47,6 +47,7 @@ new Vue({
         customerNrToGetBy: 0
     },
     methods: {
+        // Gør det nemmere for Get metoder at vise værdierne, hvor den bruger axios' get-metode og URL'en, men kun med kunder.
         helperGetAndShow(url: string) {
             axios.get<ICustomer[]>(url)
                 .then((response: AxiosResponse<ICustomer[]>) => {
@@ -57,6 +58,7 @@ new Vue({
                     alert(error.message) // https://www.w3schools.com/js/js_popup.asp
                 })
         },
+        // Gør det samme som det ovenover, men med varer.
         helperGetAndShow2(url: string) {
             axios.get<IProduct[]>(url)
                 .then((response: AxiosResponse<IProduct[]>) => {
@@ -67,13 +69,16 @@ new Vue({
                     alert(error.message) // https://www.w3schools.com/js/js_popup.asp
                 })
         },
+        // Henter alle kunder ved hjælp af helperGetAndShow
         getAllCustomers() {
             this.helperGetAndShow(baseUrl)
         },
+        // Henter en liste med kunder, så længer vædierne passer til det der indtastes i "search".
         getBySearch(keyword: string) {
             let url: string = baseUrl + "/" + "search" + "/" + keyword
             this.helperGetAndShow(url)
         },
+        // Opdater en kunde med den rigtige URL og kundens kundenummer.
         updateCustomer() {
             let url: string = baseUrl + "/" + this.updateData.customerNr
             axios.put<ICustomer>(url, this.updateData)
@@ -87,6 +92,7 @@ new Vue({
                     alert(error.message)
                 })
         },
+        // Sletter en kunde med et bestemt kundenummer.
         deleteCustomer(customerNr: number) {
             let url: string = baseUrl + "/" + customerNr
             axios.delete<void>(url)
@@ -99,6 +105,7 @@ new Vue({
                     alert(error.message)
                 })
         },
+        // Henter en liste af varer der passer med kundens kundenummer, og bruger den rigtige URL så den kan hente varer.
         getByCustomerNr(customerNr: number) {
             let url: string = baseUrl2 + "/" + "customerNr" + "/" + customerNr
             this.helperGetAndShow2(url)

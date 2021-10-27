@@ -33,11 +33,13 @@
   <div id="app">
     <h2>Søg efter kunderne</h2>
 
+    <!--2021-10-27 Knappen her henter en samling af kunder-->
     <button id="getAllButton" v-on:click="getAllCustomers" class="btn btn-primary">Alle Kunder</button>
 
     <br />
     
     <input v-model="searchToGetBy" placeholder="navn, adresse, email, etc." type ="text"/>
+    <!--2021-10-27 Knappen her henter en samling af kunder, ud fra det der er indtastet i søgefeltet-->
     <button v-on:click="getBySearch(searchToGetBy)" class="btn btn-primary">Søg</button>
 
     <ul id="customerlist" v-if="customers.length">
@@ -70,6 +72,7 @@
             </tr>
           </thead>
           <tr>
+            <!--2021-10-27 Knappen her henter en samling af produkter ud fra kundenummer-->
             <td button v-on:click="getByCustomerNr(customer.customerNr)">{{customer.customerNr}}</td>
             <td>{{customer.name}}</td>
             <td>{{customer.email}}</td>
@@ -82,13 +85,16 @@
             <td>{{customer.cvr}}</td>
           </tr>
         </table>
+        <!--2021-10-27 Knappen her sletter en kunde-->
         <button v-on:click="deleteCustomer(customer.customerNr)" class="btn btn-warning">Slet</button>
+        <!--2021-10-27 Linket fører over til en side der skaber et produkt, og tager kundens kundenummer med sig og indsætter i feltet på siden-->
         <a :href="'https://eproducts.azurewebsites.net/index.htm?customerNr='+customer.customerNr">Indsæt kundens vare</a>
       </li>
     </ul>
     <div v-else>Ingen kunder</div>
     {{deleteMessage}}
 
+    <!--2021-10-27 Knappen her fører over til en side hvor man kan skabe en kunde-->
     <Button onclick="document.location= 'https://ecustomercreate.azurewebsites.net'" class="btn btn-success">Skab en ny kunde</button>
 
     <ul id="productList" v-if="products.length">
@@ -118,6 +124,7 @@
           <td>{{product.serialNr}}</td>
         </tr>
         </table>
+        <!--2021-10-27 Linket fører over til side der opdater et produkt, og overfører produkts id, produktnummer, kundenummer, og fakturanummer i de tomme felter på siden-->
         <a :href="'https://updateproduct.azurewebsites.net/index.htm?productId='+product.productId + '&productNr='+product.productNr + '&customerNr='+product.customerNr + '&invoiceNr='+product.invoiceNr">Indsæt manglende serienummer</a>
       </li>
     </ul>
@@ -134,6 +141,7 @@
     <input v-model.number="updateData.telefonNr" placeholder="Telefonnummer" type="number" />
     <input v-model="updateData.currency" placeholder="Valuta" type="text" />
     <input v-model.number="updateData.cvr" placeholder="CVR" type="number" />
+    <!--2021-10-27 Knappen her henter opdater en kunde-->
     <button v-on:click="updateCustomer()" class="btn btn-success">Opdater</button>
     <div>{{updateMessage}}</div>
 
